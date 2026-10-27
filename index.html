@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aarav Shah</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Aarav Shah — research in quantum cosmology, inflation and gravity.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+html,body{margin:0}
+[hidden]{display:none!important}
+img{max-width:100%}
+
+/* Layout: a single reading column on a faint spacetime grid; a slim top bar switches between Home and Works (hash views). */
+:root{
+  --bg:#f2f4f7;
+  --surface:#ffffff;
+  --ink:#141a2b;
+  --muted:#59627a;
+  --line:#d9dee8;
+  --grid:rgba(40,60,120,.07);
+  --accent:#2b4bb8;
+  --accent-soft:#e3e8f8;
+  --pub:#1f7a5a;
+  --pub-soft:#dcf1e8;
+  --prof:#6a3fb5;--prof-soft:#efe8fa;
+  --mentor:#1e7a4c;--mentor-soft:#e1f3e8;
+  --display:"Spectral",Georgia,"Times New Roman",serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1220;--surface:#161b2d;--ink:#e6e9f2;--muted:#9aa3bb;--line:#2a3150;
+    --grid:rgba(140,165,255,.06);--accent:#8ea6ff;--accent-soft:#1f2850;
+    --pub:#6fd3a8;--pub-soft:#16352b;--prof:#c3a6ff;--prof-soft:#2c2148;--mentor:#7fdca6;--mentor-soft:#173826;color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1220;--surface:#161b2d;--ink:#e6e9f2;--muted:#9aa3bb;--line:#2a3150;
+  --grid:rgba(140,165,255,.06);--accent:#8ea6ff;--accent-soft:#1f2850;
+  --pub:#6fd3a8;--pub-soft:#16352b;--prof:#c3a6ff;--prof-soft:#2c2148;--mentor:#7fdca6;--mentor-soft:#173826;color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:32px 32px;
+  color:var(--ink);
+  font:16px/1.65 var(--body);
+}
+a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* top bar */
+header.bar{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:5;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.brand{font-family:var(--display);font-size:1.15rem;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:.01em}
+nav{display:flex;gap:4px}
+nav a{
+  font:500 .85rem/1 var(--body);letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;padding:9px 12px;border-radius:6px;
+}
+nav a:hover{color:var(--ink)}
+nav a[aria-current="page"]{color:var(--accent);background:var(--accent-soft)}
+
+main{padding-block:56px 72px}
+.view[hidden]{display:none!important}
+
+/* home */
+.eyebrow{font:500 .78rem/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{
+  font-family:var(--display);font-weight:500;
+  font-size:clamp(2.6rem,7vw,4rem);line-height:1.05;letter-spacing:-.015em;
+  margin:14px 0 18px;text-wrap:balance;
+}
+.lede{font-family:var(--display);font-size:clamp(1.15rem,2.6vw,1.35rem);line-height:1.55;color:var(--ink);max-width:36em;margin:0}
+.lede em{color:var(--accent);font-style:italic}
+
+.eq{
+  margin:36px 0 0;padding:18px 20px;border-left:2px solid var(--accent);
+  font:400 .95rem/1.5 var(--mono);color:var(--muted);background:var(--surface);
+  overflow-x:auto;white-space:nowrap;
+}
+.eq b{color:var(--ink);font-weight:500}
+
+.stats{display:flex;flex-wrap:wrap;gap:12px 40px;margin:40px 0 0;padding:0;list-style:none}
+.stats li{display:flex;flex-direction:column;gap:2px}
+.stats .n{font-family:var(--display);font-size:2rem;font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
+.stats .l{font-size:.85rem;color:var(--muted)}
+
+section.block{margin-top:64px}
+h2{font-family:var(--display);font-weight:500;font-size:1.6rem;margin:0 0 6px;text-wrap:balance}
+.sub{color:var(--muted);margin:0 0 24px;font-size:.95rem}
+
+.themes{margin:0;padding:0 0 0 1.2em;display:flex;flex-direction:column;gap:8px;font-size:1.05rem}
+.themes li::marker{color:var(--accent)}
+.themes span{color:var(--muted);font-size:.92rem}
+
+.recent{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.recent li{padding:16px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:5.5rem minmax(0,1fr);gap:16px}
+.recent li:last-child{border-bottom:1px solid var(--line)}
+.recent .when{font:400 .82rem/1.6 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.recent a.t{font-family:var(--display);font-size:1.12rem;line-height:1.35;color:var(--ink);text-decoration:none}
+.recent a.t:hover{color:var(--accent)}
+.more{display:inline-block;margin-top:20px;font-weight:500}
+.tl{display:flex;flex-direction:column;gap:2px;min-width:0}
+.venue{font-size:.88rem;color:var(--muted)}
+.venue-big{margin:0;font:600 .8rem/1.3 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+.collab{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.collab li{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.9rem}
+.collab li.prof{background:var(--prof-soft);border-color:var(--prof);color:var(--prof);font-weight:500}
+.collab li.mentor{background:var(--mentor-soft);border-color:var(--mentor);color:var(--mentor);font-weight:500}
+.legend{margin:20px 0 0;display:flex;flex-direction:column;gap:10px}
+.legend div{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;align-items:start}
+.legend dt{padding-top:6px}
+.legend dd{margin:0;font-size:.93rem;color:var(--muted);max-width:60ch}
+.dot{display:block;width:12px;height:12px;border-radius:50%}
+.dot.prof{background:var(--prof)}
+.dot.mentor{background:var(--mentor)}
+
+/* works */
+.works-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:28px}
+.works-head h1{margin-bottom:0}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filters button{
+  font:500 .82rem/1 var(--body);padding:9px 14px;border-radius:999px;cursor:pointer;
+  background:var(--surface);color:var(--muted);border:1px solid var(--line);
+}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+.paper{
+  background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  padding:24px;display:flex;flex-direction:column;gap:12px;
+}
+.papers{display:flex;flex-direction:column;gap:16px;list-style:none;margin:0;padding:0}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;font:400 .8rem/1.4 var(--mono);color:var(--muted)}
+.arxiv{color:var(--ink);font-weight:500}
+.cat{background:var(--accent-soft);color:var(--accent);padding:3px 7px;border-radius:4px;font-size:.74rem}
+.status{font:600 .72rem/1 var(--body);letter-spacing:.06em;text-transform:uppercase;padding:5px 8px;border-radius:4px}
+.status.pub{background:var(--pub-soft);color:var(--pub)}
+.status.pre{background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+.paper h2{font-size:1.4rem;line-height:1.3;margin:0}
+.authors{margin:0;font-size:.95rem;color:var(--muted)}
+.authors .me{color:var(--ink);font-weight:600}
+.journal{margin:0;font-size:.92rem}
+.journal i{font-family:var(--display);font-size:1.02rem}
+.summary{margin:0;font-size:.95rem;line-height:1.7;max-width:68ch;text-align:justify;hyphens:auto}
+.summary sup,.summary sub{line-height:0}
+.group-head{margin:56px 0 20px;padding-top:28px;border-top:1px solid var(--line)}
+.group{font-size:1.8rem;margin:0 0 6px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font:500 .88rem/1 var(--body);text-decoration:none;
+  padding:10px 14px;border-radius:7px;border:1px solid var(--line);color:var(--ink);background:var(--surface);
+}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.btn.primary:hover{filter:brightness(1.08);color:var(--surface)}
+.btn svg{width:16px;height:16px;flex:none}
+button.btn{cursor:pointer}
+.pv{position:fixed;inset:0;z-index:30;background:var(--bg);display:flex;flex-direction:column}
+.pv-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding-top:calc(12px + env(safe-area-inset-top,0px));padding-bottom:12px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  border-bottom:1px solid var(--line);background:var(--surface)}
+.pv-info{display:flex;flex-direction:column;gap:2px;min-width:0}
+#pv-title{font-family:var(--display);font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#pv-status{font:400 .78rem/1.3 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.pv-pages{flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;gap:16px;
+  padding-block:16px calc(16px + env(safe-area-inset-bottom,0px));padding-left:16px;padding-right:16px}
+.pv-pages canvas{max-width:100%;height:auto;background:#fff;box-shadow:0 1px 3px rgba(20,26,43,.18)}
+.cites{margin-left:auto;align-self:center;font:400 .8rem/1 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+
+footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);font-size:.88rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+.contact{min-width:0;overflow-wrap:anywhere}
+.addr{font-family:var(--mono);font-size:.85rem;color:var(--ink);user-select:all}
+
+@media (max-width:560px){
+  .recent li{grid-template-columns:minmax(0,1fr);gap:4px}
+  .paper{padding:20px}
+  .cites{margin-left:0;width:100%}
+  main{padding-block:40px 56px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .view{animation:rise .35s ease-out}
+  @keyframes rise{from{transform:translateY(6px)}to{transform:none}}
+}
+</style>
+</head>
+<body>
+
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="#home">Aarav Shah</a>
+    <nav aria-label="Main">
+      <a href="#home" data-view="home">Home</a>
+      <a href="#works" data-view="works">Works</a>
+      <a href="#talks" data-view="talks">Talks</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HOME -->
+  <section id="view-home" class="view" aria-label="Home">
+    <h1>Aarav Shah</h1>
+    <p class="lede">I'm a 15-year-old researcher based in Ahmedabad, with a broad interest in physics in its full breadth.</p>
+
+    <ul class="stats" aria-label="At a glance">
+      <li><span class="n">6</span><span class="l">papers on arXiv</span></li>
+      <li><span class="n">2</span><span class="l">in peer-reviewed journals</span></li>
+      <li><span class="n">3</span><span class="l">talks given</span></li>
+      <li><span class="n">7</span><span class="l">collaborators</span></li>
+    </ul>
+
+    <section class="block">
+      <h2>Research themes</h2>
+      <p class="sub">A few of the topics (can't list all) I am working on now or have worked on before.</p>
+      <ul class="themes">
+        <li>Inflation</li>
+        <li>Quantum Cosmology and Quantum Gravity</li>
+        <li>Modified Gravity</li>
+        <li>Fundamental Nature of Spacetime <span>(torsion, non-commutativity, discreteness, etc.)</span></li>
+        <li>Dark Energy</li>
+        <li>Dark Matter</li>
+        <li>Black Holes</li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <h2>Recent work</h2>
+      <p class="sub">Latest preprints. The full list, with PDFs, is on the Works page.</p>
+      <ul class="recent">
+        <li><span class="when">Oct 2026</span><a class="t" href="#works">Non-Commutativity in Geodesic Congruences</a></li>
+        <li><span class="when">Jun 2026</span><a class="t" href="#works">Non-Markovian Memory-Induced Effects in Quantum Cosmology</a></li>
+        <li><span class="when">Jan 2026</span><a class="t" href="#works">Inflation and Primordial Perturbations in Fractal Cosmology</a></li>
+      </ul>
+      <a class="more" href="#works">See all six papers →</a>
+    </section>
+
+    <section class="block">
+      <h2>Talks</h2>
+      <p class="sub">Talks I have given so far.</p>
+      <ul class="recent">
+        <li><span class="when">1 Oct 2026</span><div class="tl"><a class="t" href="#talks">Non-Commutativity in Geodesic Congruences</a><span class="venue">Quantum Topology Seminar · Online</span></div></li>
+        <li><span class="when">24 Aug 2026</span><div class="tl"><a class="t" href="#talks">Non-Markovian Memory-Induced Effects in Quantum Cosmology</a><span class="venue">Vanderbilt University · In person</span></div></li>
+        <li><span class="when">7 Jul 2026</span><div class="tl"><a class="t" href="#talks">Memory-Induced Effects in Quantum Cosmology</a><span class="venue">Bled Workshop on BSM Physics · Online</span></div></li>
+      </ul>
+      <a class="more" href="#talks">Slides for all talks →</a>
+    </section>
+
+    <section class="block">
+      <h2>Collaborators</h2>
+      <p class="sub">Co-authors on my papers so far.</p>
+      <ul class="collab">
+        <li class="prof">Paulo Moniz</li>
+        <li class="prof">Maxim Khlopov</li>
+        <li class="prof">Louis H. Kauffman</li>
+        <li class="mentor">Oem Trivedi</li>
+        <li class="mentor">Meet J. Vyas</li>
+        <li>Maxim Krasnov</li>
+        <li>Kanabar Jay</li>
+      </ul>
+      <dl class="legend">
+        <div><dt><span class="dot prof"></span></dt><dd>Professors I am very grateful to know, who have guided me and collaborated with me.</dd></div>
+        <div><dt><span class="dot mentor"></span></dt><dd>Mentors who are very close to me, and a big part of the reason for all the achievements on this website and more.</dd></div>
+      </dl>
+    </section>
+  </section>
+
+  <!-- WORKS -->
+  <section id="view-works" class="view" aria-label="Works" hidden>
+    <div class="works-head">
+      <div>
+        <p class="eyebrow">Publications &amp; preprints</p>
+        <h1>Works</h1>
+      </div>
+      <div class="filters" role="group" aria-label="Filter papers">
+        <button type="button" id="f-all" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" id="f-pub" data-filter="pub" aria-pressed="false">Published</button>
+        <button type="button" id="f-pre" data-filter="pre" aria-pressed="false">Preprints</button>
+      </div>
+    </div>
+    <ul class="papers" id="papers"></ul>
+
+    <div class="group-head" id="ccc-head">
+      <h2 class="group">CCC explorations</h2>
+      <p class="sub">Two manuscripts with Kanabar Jay on Penrose’s Conformal Cyclic Cosmology.</p>
+    </div>
+    <ul class="papers" id="ccc"></ul>
+  </section>
+
+  <!-- TALKS -->
+  <section id="view-talks" class="view" aria-label="Talks" hidden>
+    <div class="works-head">
+      <div>
+        <p class="eyebrow">Seminars &amp; conferences</p>
+        <h1>Talks</h1>
+      </div>
+    </div>
+    <ul class="papers" id="talks"></ul>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="contact">Contact: <span class="addr">shahaarav103@gmail.com</span> · <span class="addr">shahaarav103@zohomail.in</span></span>
+    <a href="https://inspirehep.net/authors/3083833" target="_blank" rel="noopener">INSPIRE-HEP profile ↗</a>
+  </div>
+</footer>
+
+<div class="pv" id="pv" role="dialog" aria-modal="true" aria-labelledby="pv-title" hidden>
+  <div class="pv-bar">
+    <div class="pv-info"><span id="pv-title"></span><span id="pv-status"></span></div>
+    <button type="button" class="btn" id="pv-close">Close</button>
+  </div>
+  <div class="pv-pages" id="pv-pages"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+const ME = "Aarav Shah";
+const papers = [
+  {
+    title:"Non-Markovian Memory-Induced Effects in Quantum Cosmology",
+    authors:["Aarav Shah","Paulo Moniz","Oem Trivedi","Meet J. Vyas"],
+    arxiv:"2606.13716", cats:["gr-qc","hep-th"], date:"Jun 2026", inspire:"3168352", cites:0,
+    abstract:"We study memory effects in quantum cosmology by extending the semiclassical Wheeler-DeWitt framework beyond its usual local form. The main idea is to introduce a causal memory kernel at sub leading order, rather than imposing fractional derivatives directly by hand. In this setting, fractional time evolution appears as an effective description of the underlying nonlocal dynamics. We apply the framework to cosmological perturbations in de Sitter space and find a correction to the primordial power spectrum with a characteristic <i>k</i><sup>3/4</sup> scaling. This contribution mainly affects high <i>l</i> CMB temperature anisotropies, in contrast with standard semiclassical quantum gravitational corrections, which are strongest at large angular scales. We also discuss how the same memory-dependent dynamics may affect primordial non-Gaussianity, producing scale dependent corrections to the bispectrum and possible deviations from the usual squeezed limit consistency relation. Since the memory coefficient controls short scale power, it may also influence structure formation and could require some tuning in order to give phenomenologically acceptable astrophysical environments. Finally, we suggest that a cyclic extension of the Hawking-Hartle no-boundary proposal may provide a setting in which the effective memory strength can evolve across successive cosmological histories. In this way, the framework gives a concrete realization of fractional quantum cosmology based on memory effects and also points to possible observational signatures of nonlocal quantum gravitational dynamics."
+  },
+  {
+    title:"Non-Commutativity in Geodesic Congruences",
+    authors:["Aarav Shah","Louis H. Kauffman"],
+    arxiv:"2610.15105", cats:["gr-qc"], date:"Oct 2026", inspire:"3214202", cites:0,
+    abstract:"We propose a geometric realization of spacetime non-commutativity where the spacetime manifold remains smooth while the commutation relation between tangent and separation vectors of geodesic congruences is generalized via Frobenius' theorem. This non-commutative kinematic deformation leads to a modified Raychaudhuri equation with a shifted expansion scalar <i>θ̃</i> = <i>θ</i> + <i>θ</i><sup>NC</sup>. We introduce a timelike and null-like Non-Commutative Energy Condition (NCEC) under which focusing and geodesic incompleteness can, in some regimes, persist even when the standard strong energy condition is violated. Using this, we generalize the key focusing lemmas, conjugate-point propositions, and singularity theorems for both timelike geodesics orthogonal to a Cauchy surface and null geodesics orthogonal to a trapped surface. Applied to a FLRW spacetime, we argue that <i>θ</i><sup>NC</sup> modifies both the Friedmann acceleration equation and the continuity equations. The non-commutative corrections separate into a universal modification of the dilution of the standard cosmological fluids and another contribution to the dark energy sector that is non-linear in energy density. Crucially, this provides a purely geometric origin for the evolution of dark energy, without introducing exotic dark energy fields or modifying Einstein's field equations."
+  },
+  {
+    title:"Inflation and Primordial Perturbations in Fractal Cosmology",
+    authors:["Aarav Shah","Paulo Moniz","Maxim Khlopov","Oem Trivedi","Maxim Krasnov"],
+    arxiv:"2601.04691", cats:["gr-qc","hep-ph","hep-th"], date:"Jan 2026", inspire:"3098833", cites:1,
+    journal:"Physics of the Dark Universe", jref:"52 (2026) 102285", doi:"10.1016/j.dark.2026.102285",
+    abstract:"We study inflationary dynamics within the framework of fractal cosmology, where space is characterized by an effective non-integer dimension <i>D</i>. In our work, fractal effects are sourced through thermodynamic modifications at the cosmological horizon. Using the modified Friedmann and continuity equations, we then derive the modified slow roll parameter and their evolution for linear, cubic, Starobinsky (<i>R</i> + <i>R</i><sup>2</sup>) and Natural inflationary potentials, showing that the slow roll parameters get suppressed for <i>D</i> &lt; 3. We further derive a fractal extension of the Mukhanov-Sasaki equation by introducing an effective momentum <i>k</i><sub>eff</sub>, which captures the modification of spatial Laplacian due to fractality. This leads to explicit corrections to the scalar power spectrum and the spectral index <i>n</i><sub>s</sub>, depending on both <i>D</i> and a fractional length scale <i>L</i>. Confrontation with Planck 2018 data constrains the effective dimension to a best-fit range of 2.7 ≲ <i>D</i> ≲ 3 for the Starobinsky model. Furthermore, in the case of Natural Inflation, fractal corrections relax the usual requirement of super-Planckian axion decay constants, opening a phenomenologically viable parameter space inaccessible in the standard 3+1 dimensional cosmology."
+  },
+  {
+    title:"Cosmology in the De Donder–Weyl Formulation of Einstein–Cartan Gravity",
+    authors:["Aarav Shah","Maxim Khlopov","Maxim Krasnov"],
+    arxiv:"2511.15773", cats:["gr-qc"], date:"Nov 2025", inspire:"3085060", cites:0,
+    journal:"European Physical Journal C", jref:"86 (2026) 156", doi:"10.1140/epjc/s10052-026-15392-x", pdf:"papers/Shah-Khlopov-Krasnov_EPJC-86-156.pdf",
+    abstract:"We investigate torsion-driven cosmological dynamics within the framework of Einstein–Cartan gravity using the De Donder–Weyl Hamiltonian formalism, where the tetrad and Lorentz connection act as independent variables and the Hamiltonian includes quadratic Riemann–Cartan corrections. Embedding this theory in an FLRW background, we derive the corresponding torsion-modified Friedmann equations and analyze their solutions across radiation and matter-dominated epochs. The commonly assumed power law form <i>a</i>(<i>t</i>) = <i>βt</i><sup><i>α</i></sup> is shown to generate multiple solution branches, many of which can be considered to be “unphysical”. A hybrid solution, <i>a</i>(<i>t</i>) = <i>Ct</i><sup><i>α</i></sup><i>e</i><sup><i>Dt</i><sup><i>β</i></sup></sup> emerges in the special case <i>g</i><sub>1</sub> = 0, where the quadratic Riemann–Cartan term vanishes. For <i>g</i><sub>1</sub> ≠ 0, the equations become nonlinear, precluding closed-form analytic solutions. These findings highlight the limitations of the power-law approximation and identify the restricted conditions under which torsion can coherently drive cosmic expansion."
+  },
+  {
+    title:"Particle Production and Higgs Reheating",
+    authors:["Aarav Shah","Kanabar Jay","Maxim Khlopov","Oem Trivedi","Maxim Krasnov"],
+    arxiv:"2512.21658", cats:["astro-ph.CO","gr-qc","hep-ph","hep-th"], date:"Dec 2025", inspire:"3095787", cites:2,
+    abstract:"Reheating is essential for transforming the cold, vacuum dominated Universe at the end of inflation into the hot thermal bath required by the Standard Model. In many well motivated inflationary models, however, the inflaton has no direct couplings to other fields, raising the question of how the Universe becomes repopulated with particles. We address this question within the framework of geometric reheating, where energy transfer occurs purely through gravitational effects. Focusing on a Higgs inflationary scenario with a non-minimal curvature coupling <i>ξϕ</i><sup>2</sup><i>R</i>, we derive the post-inflationary dynamics and compute particle production using the Bogoliubov formalism. We show that the rapid, oscillatory evolution of the curvature scalar after inflaton acts as a time dependent gravitational pump, creating scalar spectator particles even in the absence of explicit interactions. This curvature driven production mechanism provides a natural and efficient route to reheating, demonstrating that gravity alone can initiate the standard thermal history and bridge inflation with radiation domination in minimal, coupling free models of the early Universe."
+  },
+  {
+    title:"The Ultra Slow-Roll Phase of Warm Inflation in Braneworld Cosmology",
+    authors:["Aarav Shah"],
+    arxiv:"2510.22248", cats:["gr-qc","astro-ph.CO"], date:"Oct 2025", inspire:"3073814", cites:1,
+    abstract:"Slow-roll of the inflaton (inflationary field) defines the standard dynamics of the inflationary epoch. However, the inflaton deviates from slow-roll when it encounters an extremely flat region in the inflationary potential, and enters a phase dubbed Ultra Slow Roll (USR). In previous studies, there have been various theories which modify the theory of general relativity, all of them having different motivations based on different paradigms. Among these, braneworld gravity, motivated from string theory; is one of the most prominent theories as it provides a geometrical explanation for the weakness of gravity. In this article, we explore two possible braneworld background theories, the Randall-Sundrum (RS-II) model and the Dvali-Gabadadze-Porratai (DGP) model, and then realize an USR phase in a particularly interesting inflationary scenario, called warm inflation. In the warm inflationary scenario, a thermal radiation bath coexists with the inflationary energy density as an effect of the dissipative dynamics. We then derive inflationary slow roll parameters and the primordial power spectrum of scalar curvature perturbations in such a setup. We then numerically investigate the evolution of the inflaton and the primordial power spectrum of scalar curvature perturbations. Our analysis shows that the braneworld contributions become progressively suppressed as the USR conditions are made more stringent, indicating that the USR phase effectively diminishes brane-induced corrections to standard inflationary dynamics."
+  }
+];
+
+const ccc = [
+ {
+  "title": "Exploring Dark Energy in Conformal Cyclic Cosmology",
+  "authors": [
+   "Aarav Shah",
+   "Kanabar Jay"
+  ],
+  "date": "Oct 2026",
+  "pdf": "pdf/Shah-Jay_Dark-Energy-in-CCC.pdf",
+  "abstract": "We explore the role of dark energy within the framework of Conformal Cyclic Cosmology. We first investigate how conformal rescaling relating successive aeons may modify the effective cosmological constant through contributions inherited from the previous aeon together with those induced by the conformal rescaling itself. Furthermore, we discuss how non-Markovian correlations between successive aeons could allow the effective cosmological constant to evolve dynamically across cosmic cycles, offering a possible perspective on the cosmological constant problem in which the apparent fine-tuning of its observed small value may emerge through cumulative evolution across successive aeons. We then consider the implications of these conformal contributions for Early Dark Energy, finding that consistency excludes a non-phantom asymptotic equation of state for the preceding aeon. We further argue that recent Big Bang Nucleosynthesis constraints apply to the effective equation of state parameter rather than directly to the underlying quintessence field. This naturally introduces a parameter degeneracy that may allow the scalar field to remain in the slow-roll regime during Big Bang Nucleosynthesis, while remaining compatible with current observations. The overall aim is to promote discussions regarding the dark energy sector of Conformal Cyclic Cosmology."
+ },
+ {
+  "title": "Quantum Cosmology of Successive Universes",
+  "authors": [
+   "Aarav Shah",
+   "Kanabar Jay"
+  ],
+  "date": "Oct 2026",
+  "pdf": "pdf/Shah-Jay_Quantum-Cosmology-of-Successive-Universes.pdf",
+  "abstract": "We propose a generalized framework for quantum cosmology in which successive spacetime manifolds are coupled through a common crossover hypersurface by extending the gravitational path integral with a geometric matching functional. As an illustrative example, we consider Penrose’s Conformal Cyclic Cosmology, where consecutive universes are related by a conformal transformation. The resulting matching modifies the minisuperspace Wheeler-DeWitt equation, yielding an effective quantum potential governed by the conformal factor. Solving Penrose’s Phantom Field Equation, we find that the conformal factor rapidly grows with the scale factor, while the effective Wheeler-DeWitt potential is rapidly suppressed. We further investigate cosmological perturbations and find that the conformal crossover preserves a nearly scale-invariant primordial spectrum with <i>n</i><sub>s</sub> ≃ 1."
+ }
+];
+
+const talks = [
+ {
+  "date": "1 Oct 2026",
+  "iso": "2026-10-01",
+  "venue": "Quantum Topology Seminar",
+  "mode": "Online",
+  "title": "Non-Commutativity in Geodesic Congruences",
+  "with": "Louis H. Kauffman",
+  "slides": "slides/Shah_Quantum-Topology-Seminar_2026-10-01.pdf",
+  "pages": 37,
+  "arxiv": "2610.15105"
+ },
+ {
+  "date": "24 Aug 2026",
+  "iso": "2026-08-24",
+  "venue": "Vanderbilt University",
+  "mode": "In person",
+  "title": "Non-Markovian Memory-Induced Effects in Quantum Cosmology",
+  "with": "Paulo Moniz, Oem Trivedi, Meet J. Vyas",
+  "slides": "slides/Shah_Vanderbilt_2026-08-24.pdf",
+  "pages": 39,
+  "arxiv": "2606.13716"
+ },
+ {
+  "date": "7 Jul 2026",
+  "iso": "2026-07-07",
+  "venue": "Bled Workshop on BSM Physics",
+  "mode": "Online",
+  "title": "Memory-Induced Effects in Quantum Cosmology",
+  "with": "Paulo Moniz, Oem Trivedi, Meet J. Vyas",
+  "slides": "slides/Shah_Bled-Workshop_2026-07-07.pdf",
+  "pages": 14,
+  "arxiv": "2606.13716"
+ }
+];
+
+const icon = {
+  pdf:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" fill="none"/><path d="M14 3v5h5" fill="none"/><path d="M12 11v6M9.5 14.5 12 17l2.5-2.5" fill="none"/></svg>',
+  ext:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9" fill="none"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5" fill="none"/></svg>'
+};
+
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function render(filter){
+  const list = document.getElementById("papers");
+  list.innerHTML = papers
+    .filter(p => filter==="all" || (filter==="pub" ? !!p.journal : !p.journal))
+    .map(p => `
+    <li class="paper">
+      <div class="meta">
+        <span class="arxiv">arXiv:${p.arxiv}</span>
+        ${p.cats.map(c=>`<span class="cat">${c}</span>`).join("")}
+        <span>${p.date}</span>
+        <span class="status ${p.journal?"pub":"pre"}">${p.journal?"Published":"Preprint"}</span>
+      </div>
+      <h2>${esc(p.title)}</h2>
+      <p class="authors">${p.authors.map(a=> a===ME?`<span class="me">${a}</span>`:esc(a)).join(", ")}</p>
+      ${p.journal?`<p class="journal"><i>${p.journal}</i> ${p.jref}</p>`:""}
+      <p class="summary">${p.abstract}</p>
+      <div class="actions">
+        ${p.pdf ? `<button type="button" class="btn primary" data-pdf="${p.pdf}" data-title="${esc(p.title)}">${icon.pdf}Journal PDF</button>` : `<a class="btn primary" href="https://arxiv.org/pdf/${p.arxiv}" target="_blank" rel="noopener">${icon.pdf}PDF</a>`}
+        <a class="btn" href="https://arxiv.org/abs/${p.arxiv}" target="_blank" rel="noopener">${icon.ext}arXiv</a>
+        ${p.doi?`<a class="btn" href="https://doi.org/${p.doi}" target="_blank" rel="noopener">${icon.ext}Journal</a>`:""}
+        <a class="btn" href="https://inspirehep.net/literature/${p.inspire}" target="_blank" rel="noopener">${icon.ext}INSPIRE</a>
+        <span class="cites">${p.cites} citation${p.cites===1?"":"s"}</span>
+      </div>
+    </li>`).join("");
+}
+
+document.getElementById("ccc").innerHTML = ccc.map(p => `
+    <li class="paper">
+      <div class="meta">
+        <span>${p.date}</span>
+        <span class="status pre">Manuscript</span>
+      </div>
+      <h2>${esc(p.title)}</h2>
+      <p class="authors">${p.authors.map(a=> a===ME?`<span class="me">${a}</span>`:esc(a)).join(", ")}</p>
+      <p class="summary">${p.abstract}</p>
+      <div class="actions">
+        <button type="button" class="btn primary" data-pdf="${p.pdf}" data-title="${esc(p.title)}">${icon.pdf}PDF</button>
+      </div>
+    </li>`).join("");
+
+document.getElementById("talks").innerHTML = talks.map(t => `
+    <li class="paper talk">
+      <div class="meta">
+        <time datetime="${t.iso}">${t.date}</time>
+        <span class="status ${t.mode==="In person"?"pub":"pre"}">${t.mode}</span>
+      </div>
+      <p class="venue-big">${esc(t.venue)}</p>
+      <h2>${esc(t.title)}</h2>
+      <p class="authors">On work with ${esc(t.with)}</p>
+      <div class="actions">
+        <button type="button" class="btn primary" data-pdf="${t.slides}" data-title="${esc(t.title)}">${icon.pdf}Slides</button>
+        <a class="btn" href="https://arxiv.org/abs/${t.arxiv}" target="_blank" rel="noopener">${icon.ext}Paper</a>
+        <span class="cites">${t.pages} slides</span>
+      </div>
+    </li>`).join("");
+
+document.querySelectorAll(".filters button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll(".filters button").forEach(x=>x.setAttribute("aria-pressed", x===b?"true":"false"));
+    render(b.dataset.filter);
+    const all = b.dataset.filter==="all";
+    document.getElementById("ccc-head").hidden = !all;
+    document.getElementById("ccc").hidden = !all;
+  });
+});
+
+function show(){
+  const v = ({"#works":"works","#talks":"talks"})[location.hash] || "home";
+  ["home","works","talks"].forEach(n => document.getElementById("view-"+n).hidden = v!==n);
+  document.querySelectorAll("nav a").forEach(a=>{
+    if(a.dataset.view===v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+  });
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange", show);
+
+/* In-page PDF viewer */
+const pv = document.getElementById("pv"), pvPages = document.getElementById("pv-pages"),
+      pvTitle = document.getElementById("pv-title"), pvStatus = document.getElementById("pv-status");
+let pvToken = 0, pvOpener = null;
+if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+async function openPdf(url, title){
+  const token = ++pvToken;
+  pvTitle.textContent = title || "";
+  pvStatus.textContent = "Loading…";
+  pvPages.innerHTML = "";
+  pv.hidden = false;
+  document.documentElement.style.overflow = "hidden";
+  document.getElementById("pv-close").focus();
+  try{
+    if (!window.pdfjsLib) throw new Error("viewer");
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(res.status);
+    const doc = await pdfjsLib.getDocument({data: await res.arrayBuffer()}).promise;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    for (let i = 1; i <= doc.numPages; i++){
+      if (token !== pvToken) return;
+      const page = await doc.getPage(i);
+      const base = page.getViewport({scale: 1});
+      const cssW = Math.min(pvPages.clientWidth - 32, 1000);
+      const vp = page.getViewport({scale: (cssW / base.width) * dpr});
+      const c = document.createElement("canvas");
+      c.width = vp.width; c.height = vp.height;
+      c.style.width = (vp.width / dpr) + "px";
+      c.setAttribute("aria-label", "Page " + i);
+      pvPages.appendChild(c);
+      await page.render({canvasContext: c.getContext("2d"), viewport: vp}).promise;
+      pvStatus.textContent = i + " / " + doc.numPages;
+    }
+  }catch(e){
+    if (token === pvToken) pvStatus.textContent = "The PDF didn't load. Close the viewer and try again.";
+  }
+}
+function closePdf(){
+  pvToken++;
+  pv.hidden = true;
+  pvPages.innerHTML = "";
+  document.documentElement.style.overflow = "";
+  if (pvOpener) pvOpener.focus();
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-pdf]");
+  if (b){ e.preventDefault(); pvOpener = b; openPdf(b.dataset.pdf, b.dataset.title); }
+});
+document.getElementById("pv-close").addEventListener("click", closePdf);
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !pv.hidden) closePdf(); });
+render("all");
+show();
+</script>
+
+</body>
+</html>
