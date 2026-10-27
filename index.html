@@ -338,7 +338,6 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   <div class="pv-pages" id="pv-pages"></div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
 const ME = "Aarav Shah";
 const papers = [
@@ -465,7 +464,7 @@ function render(filter){
       ${p.journal?`<p class="journal"><i>${p.journal}</i> ${p.jref}</p>`:""}
       <p class="summary">${p.abstract}</p>
       <div class="actions">
-        ${p.pdf ? `<button type="button" class="btn primary" data-pdf="${p.pdf}" data-title="${esc(p.title)}">${icon.pdf}Journal PDF</button>` : `<a class="btn primary" href="https://arxiv.org/pdf/${p.arxiv}" target="_blank" rel="noopener">${icon.pdf}PDF</a>`}
+        ${p.pdf ? `<a class="btn primary" href="${p.pdf}" target="_blank" rel="noopener" data-pdf="${p.pdf}" data-title="${esc(p.title)}">${icon.pdf}Journal PDF</a>` : `<a class="btn primary" href="https://arxiv.org/pdf/${p.arxiv}" target="_blank" rel="noopener">${icon.pdf}PDF</a>`}
         <a class="btn" href="https://arxiv.org/abs/${p.arxiv}" target="_blank" rel="noopener">${icon.ext}arXiv</a>
         ${p.doi?`<a class="btn" href="https://doi.org/${p.doi}" target="_blank" rel="noopener">${icon.ext}Journal</a>`:""}
         <a class="btn" href="https://inspirehep.net/literature/${p.inspire}" target="_blank" rel="noopener">${icon.ext}INSPIRE</a>
@@ -484,7 +483,7 @@ document.getElementById("ccc").innerHTML = ccc.map(p => `
       <p class="authors">${p.authors.map(a=> a===ME?`<span class="me">${a}</span>`:esc(a)).join(", ")}</p>
       <p class="summary">${p.abstract}</p>
       <div class="actions">
-        <button type="button" class="btn primary" data-pdf="${p.pdf}" data-title="${esc(p.title)}">${icon.pdf}PDF</button>
+        <a class="btn primary" href="${p.pdf}" target="_blank" rel="noopener" data-pdf="${p.pdf}" data-title="${esc(p.title)}">${icon.pdf}PDF</a>
       </div>
     </li>`).join("");
 
@@ -498,7 +497,7 @@ document.getElementById("talks").innerHTML = talks.map(t => `
       <h2>${esc(t.title)}</h2>
       <p class="authors">On work with ${esc(t.with)}</p>
       <div class="actions">
-        <button type="button" class="btn primary" data-pdf="${t.slides}" data-title="${esc(t.title)}">${icon.pdf}Slides</button>
+        <a class="btn primary" href="${t.slides}" target="_blank" rel="noopener" data-pdf="${t.slides}" data-title="${esc(t.title)}">${icon.pdf}Slides</a>
         <a class="btn" href="https://arxiv.org/abs/${t.arxiv}" target="_blank" rel="noopener">${icon.ext}Paper</a>
         <span class="cites">${t.pages} slides</span>
       </div>
@@ -528,7 +527,7 @@ window.addEventListener("hashchange", show);
 const pv = document.getElementById("pv"), pvPages = document.getElementById("pv-pages"),
       pvTitle = document.getElementById("pv-title"), pvStatus = document.getElementById("pv-status");
 let pvToken = 0, pvOpener = null;
-if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+const INLINE_PDF = false;
 
 async function openPdf(url, title){
   const token = ++pvToken;
@@ -559,7 +558,8 @@ async function openPdf(url, title){
       pvStatus.textContent = i + " / " + doc.numPages;
     }
   }catch(e){
-    if (token === pvToken) pvStatus.textContent = "The PDF didn't load. Close the viewer and try again.";
+    if (token === pvToken) pvStatus.textContent = "The PDF didn't load (" + (e && e.message || "unknown error") + "). Close the viewer and try again.";
+    console.error("PDF viewer:", e);
   }
 }
 function closePdf(){
@@ -571,7 +571,7 @@ function closePdf(){
 }
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-pdf]");
-  if (b){ e.preventDefault(); pvOpener = b; openPdf(b.dataset.pdf, b.dataset.title); }
+  if (b && INLINE_PDF){ e.preventDefault(); pvOpener = b; openPdf(b.dataset.pdf, b.dataset.title); }
 });
 document.getElementById("pv-close").addEventListener("click", closePdf);
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !pv.hidden) closePdf(); });
